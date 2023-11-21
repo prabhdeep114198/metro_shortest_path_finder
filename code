@@ -1,0 +1,700 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Scanner;
+
+public class MetroShortPath {
+    static class Station {
+        String name;
+        List<String> timings;
+        Map<Station, Integer> neighbors;
+
+        Station(String name) {
+            this.name = name;
+            this.timings = new ArrayList<>();
+            this.neighbors = new HashMap<>();
+        }
+
+        void addNeighbor(Station neighbor, int time) {
+            neighbors.put(neighbor, time);
+        }
+        
+        void addTiming(String timing) {
+            timings.add(timing);
+        }
+
+        public String toString() {
+            return name;
+        }
+    }
+
+    private static Station findStationByName(String stationName, List<Station> allStations) {
+        for (Station station : allStations) {
+            if (station.name.equalsIgnoreCase(stationName)) {
+                return station;
+            }
+        }
+        return null;
+    }
+
+    public static List<Station> dijkstra(Station start, Station end) {
+       Map<Station, Integer> distances = new HashMap<>();
+       Map<Station, Station> previousStations = new HashMap<>();
+       PriorityQueue<Station> queue = new PriorityQueue<>(Comparator.comparingInt(distances::get));
+       distances.put(start, 0);
+       queue.add(start);
+
+       while (!queue.isEmpty()) {
+           Station current = queue.poll();
+
+           if (current == end) {
+               break;  
+           }
+
+           for (Map.Entry<Station, Integer> neighborEntry : current.neighbors.entrySet()) {
+               Station neighbor = neighborEntry.getKey();
+               int timeToNeighbor = distances.get(current) + neighborEntry.getValue();
+
+               if (timeToNeighbor < distances.getOrDefault(neighbor, Integer.MAX_VALUE)) {
+                   distances.put(neighbor, timeToNeighbor);
+                   previousStations.put(neighbor, current);
+                   queue.add(neighbor);
+               }
+           }
+       }
+
+       if (!previousStations.containsKey(end)) {
+           return null;  
+       }
+        
+       List<Station> path = new ArrayList<>();
+       Station current = end;
+       while (current != null) {
+           path.add(current);
+           current = previousStations.get(current);
+       }
+
+       Collections.reverse(path);
+       return path;
+    }
+
+    public static void main(String[] args) {
+        List<Station> allStations = new ArrayList<>();
+       
+        Station startStation = null;
+        Station endStation = null;
+
+        Scanner sc = new Scanner(System.in);
+        Station millenniumcitycentre = new Station("millenium city centre");
+        Station iffcochowk = new Station("iffco chowk");
+        Station mgroad = new Station("mg road");
+        Station sikanderpur = new Station("sikanderpur");
+		Station gurudronacharya = new Station("guru dronacharya");
+        Station arjangarh = new Station("arjan garh");
+        Station ghitorni = new Station("ghitorni");
+        Station sultanpur = new Station("sultanpur");
+		Station chattarpur = new Station("chattarpur");
+        Station qutabminar = new Station("qutab minar");
+        Station saket = new Station("saket");
+        Station malviyanagar = new Station("malviya nagar");
+		Station hauzkhas = new Station("hauz khas");
+        Station greenpark = new Station("green park");
+        Station aiims = new Station("aiims");
+        Station ina = new Station("ina");
+		Station jorbagh = new Station("jor bagh");
+        Station lokkalyanmarg = new Station("lok kalyan marg");
+        Station udyogbhawan = new Station("udyog bhawan");
+        Station centralsecretariat = new Station("centralsecretariat");
+		Station patelchowk = new Station("patel chowk");
+        Station rajivchowk = new Station("rajiv chowk");
+        Station newdelhi = new Station("new delhi");
+        Station chawribazar = new Station("chawri bazar");
+		Station chandnichowk = new Station("chandni chowk");
+        Station kashmeregate = new Station("kashmere gate");
+        Station civillines = new Station("civil lines");
+        Station vidhansabha = new Station("vidhan sabha");
+		Station vishwavidyalaya = new Station("vishwavidyalaya");
+        Station gtbnagar = new Station("gtb nagar");
+        Station modeltown = new Station("model town");
+        Station adarshnagar = new Station("adarsh nagar");
+		Station jahangiripuri = new Station("jahangiripuri");
+        Station phase1 = new Station("phase1");
+        Station phase2 = new Station("phase2");
+        Station phase3 = new Station("phase3");
+		Station moulsariavenue = new Station("moulsari avenue");
+        Station belvederetowers = new Station("belvedere towers");
+        Station sec4243 = new Station("sec42-43");
+		Station cybercity = new Station("cyber city");
+		Station sec5354 = new Station("sec53-54");
+        Station sec54 = new Station("sec54");
+        Station sec5556 = new Station("sec55-56");
+		Station dwarka = new Station("dwarka");
+        Station dwarkasec21 = new Station("dwarka sec 21");
+		Station dwarkasec8 = new Station("dwarka sec8");
+        Station dwarkasec9 = new Station("dwarka sec9");
+        Station dwarkasec10 = new Station("dwarka sec10");
+        Station dwarkasec11 = new Station("dwarka sec11");
+		Station dwarkasec12 = new Station("dwarka sec12");
+        Station dwarkasec13 = new Station("dwarka sec13");
+        Station dwarkasec14 = new Station("dwarka sec14");
+        Station dwarkamor = new Station("dwarka mor");
+		Station nawada = new Station("nawada");
+        Station uttamnagarwest = new Station("uttam nagar west");
+        Station uttamnagareast = new Station("uttam nagar east");
+        Station janakpuriwest = new Station("janakpuri west");
+		Station janakpurieast = new Station("janakpuri east");
+        Station tilaknagar = new Station("tilak nagar");
+        Station subhashnagar = new Station("subhash nagar");
+        Station tagoregarden = new Station("tagore garden");
+		Station rajourigarden = new Station("rajouri garden");
+        Station rameshnagar = new Station("ramesh nagar");
+		Station motinagar = new Station("moti nagar");
+        Station kirtinagar = new Station("kirti nagar");
+        Station shadipur = new Station("shadipur");
+		Station patelnagar = new Station("patel nagar");
+        Station rajendrapalace = new Station("rajendra palace");
+        Station karolbagh = new Station("karol bagh");
+        Station jhandewalan = new Station("jhandewalan");
+		Station ramarg = new Station("ra marg");
+        Station barakhambaroad = new Station("barakhamba road");
+        Station mandihouse = new Station("mandi house");
+        Station supremecourt = new Station("supreme court");
+		Station yamunabank = new Station("yamuna bank");
+        Station laxminagar = new Station("laxmi nagar");
+        Station nirmanvihar = new Station("nirman vihar");
+        Station preetvihar = new Station("preet vihar");
+		Station karkarduma = new Station("karkarduma");
+        Station anandvihar = new Station("anand vihar");
+        Station kaushambi = new Station("kaushambi");
+        Station vaishali = new Station("vaishali");
+        Station dabrimor = new Station("dabro mor");
+        Station dashrathpuri = new Station("dashrathpuri");
+        Station palam = new Station("palam");
+		Station sadarbazar = new Station("sadar bazar");
+        Station igit1 = new Station("IGI terminal 1");
+        Station shankarvihar = new Station("shankar vihar");
+        Station vasantvihar = new Station("vasant vihar");
+		Station munirka = new Station("munirka");
+        Station rkpuram = new Station("RK Puram");
+		Station iit = new Station("IIT");
+        Station panchsheel = new Station("panchsheel");
+        Station chiragdelhi = new Station("chirag delhi");
+		Station graterkailash = new Station("grater kailash");
+        Station nehruenclave = new Station("nehru enclave");
+        Station kalkaji = new Station("kalka ji mandir");
+        Station okhla = new Station("okhla");
+		Station sukhdevvihar = new Station("sukhdevvihar");
+        Station jamiamiliaislamia = new Station("jamia milia islamia");
+        Station okhlavihar = new Station("okhla vihar");
+        Station jasolavihar = new Station("jasola vihar");
+		Station kalindikunj = new Station("kalindi kunj");
+        Station okhlabirdsanctuary = new Station("okhla bird sanctuary");
+        Station botanicalgarden = new Station("botanical garden");
+
+        // Add stations to the allStations list
+        allStations.add(millenniumcitycentre);
+        allStations.add(iffcochowk);
+        allStations.add(mgroad);
+        allStations.add(sikanderpur);
+		allStations.add(gurudronacharya);
+        allStations.add(arjangarh);
+        allStations.add(ghitorni);
+        allStations.add(sultanpur);
+		allStations.add(chattarpur);
+        allStations.add(qutabminar);
+        allStations.add(saket);
+        allStations.add(malviyanagar);
+		allStations.add(hauzkhas);
+        allStations.add(greenpark);
+        allStations.add(aiims);
+        allStations.add(ina);
+		allStations.add(jorbagh);
+        allStations.add(lokkalyanmarg);
+        allStations.add(udyogbhawan);
+        allStations.add(centralsecretariat);
+		allStations.add(patelchowk);
+        allStations.add(rajivchowk);
+        allStations.add(newdelhi);
+        allStations.add(chawribazar);
+		allStations.add(chandnichowk);
+        allStations.add(kashmeregate);
+        allStations.add(civillines);
+        allStations.add(vidhansabha);
+		allStations.add(vishwavidyalaya);
+        allStations.add(gtbnagar);
+        allStations.add(modeltown);
+        allStations.add(adarshnagar);
+		allStations.add(jahangiripuri);
+        allStations.add(phase1);
+        allStations.add(phase2);
+        allStations.add(phase3);
+		allStations.add(moulsariavenue);
+        allStations.add(belvederetowers);
+        allStations.add(sec4243);
+		allStations.add(cybercity);
+		allStations.add(sec5354);
+        allStations.add(sec54);
+        allStations.add(sec5556);
+		allStations.add(dwarka);
+		allStations.add(dwarkasec21);
+		allStations.add(dwarkasec8);
+        allStations.add(dwarkasec9);
+        allStations.add(dwarkasec10);
+        allStations.add(dwarkasec11);
+		allStations.add(dwarkasec12);
+        allStations.add(dwarkasec13);
+        allStations.add(dwarkasec14);
+        allStations.add(dwarkamor);
+		allStations.add(nawada);
+        allStations.add(uttamnagarwest);
+        allStations.add(janakpuriwest);
+		allStations.add(janakpurieast);
+        allStations.add(tilaknagar);
+        allStations.add(subhashnagar);
+        allStations.add(tagoregarden);
+		allStations.add(rajourigarden);
+        allStations.add(rameshnagar);
+		allStations.add(motinagar);
+        allStations.add(kirtinagar);
+        allStations.add(shadipur);
+		allStations.add(patelnagar);
+        allStations.add(rajendrapalace);
+        allStations.add(karolbagh);
+        allStations.add(jhandewalan);
+		allStations.add(ramarg);
+        allStations.add(barakhambaroad);
+        allStations.add(mandihouse);
+        allStations.add(supremecourt);
+		allStations.add(yamunabank);
+        allStations.add(laxminagar);
+        allStations.add(nirmanvihar);
+        allStations.add(preetvihar);
+		allStations.add(karkarduma);
+        allStations.add(anandvihar);
+        allStations.add(kaushambi);
+        allStations.add(vaishali);
+        allStations.add(dashrathpuri);
+        allStations.add(palam);
+		allStations.add(sadarbazar);
+        allStations.add(vasantvihar);
+		allStations.add(munirka);
+        allStations.add(chiragdelhi);
+        allStations.add(nehruenclave);
+        allStations.add(okhla);
+		allStations.add(sukhdevvihar);
+        allStations.add(jamiamiliaislamia);
+        allStations.add(okhlavihar);
+        allStations.add(jasolavihar);
+		allStations.add(kalindikunj);
+        allStations.add(okhlabirdsanctuary);
+        allStations.add(botanicalgarden);
+        
+        millenniumcitycentre.addTiming("6:00 AM - 10:00 PM");
+        iffcochowk.addTiming("6:00 AM - 10:00 PM");
+        mgroad.addTiming("6:00 AM - 10:00 PM");
+        sikanderpur.addTiming("6:00 AM - 10:00 PM");
+        gurudronacharya.addTiming("6:00 AM - 10:00 PM");
+        arjangarh.addTiming("6:00 AM - 10:00 PM");
+        ghitorni.addTiming("6:00 AM - 10:00 PM");
+        sultanpur.addTiming("6:00 AM - 10:00 PM");
+        chattarpur.addTiming("6:00 AM - 10:00 PM");
+        qutabminar.addTiming("6:00 AM - 10:00 PM");
+        saket.addTiming("6:00 AM - 10:00 PM");
+        malviyanagar.addTiming("6:00 AM - 10:00 PM");
+        hauzkhas.addTiming("6:00 AM - 10:00 PM");
+        greenpark.addTiming("6:00 AM - 10:00 PM");
+        aiims.addTiming("6:00 AM - 10:00 PM");
+        ina.addTiming("6:00 AM - 10:00 PM");
+        jorbagh.addTiming("6:00 AM - 10:00 PM");
+        lokkalyanmarg.addTiming("6:00 AM - 10:00 PM");
+        udyogbhawan.addTiming("6:00 AM - 10:00 PM");
+        centralsecretariat.addTiming("6:00 AM - 10:00 PM");
+        patelchowk.addTiming("6:00 AM - 10:00 PM");
+        rajivchowk.addTiming("6:00 AM - 10:00 PM");
+        newdelhi.addTiming("6:00 AM - 10:00 PM");
+        chawribazar.addTiming("6:00 AM - 10:00 PM");
+        chandnichowk.addTiming("6:00 AM - 10:00 PM");
+        kashmeregate.addTiming("6:00 AM - 10:00 PM");
+        civillines.addTiming("6:00 AM - 10:00 PM");
+        vidhansabha.addTiming("6:00 AM - 10:00 PM");
+        vishwavidyalaya.addTiming("6:00 AM - 10:00 PM");
+        gtbnagar.addTiming("6:00 AM - 10:00 PM");
+        modeltown.addTiming("6:00 AM - 10:00 PM");
+        adarshnagar.addTiming("6:00 AM - 10:00 PM");
+        jahangiripuri.addTiming("6:00 AM - 10:00 PM");
+        phase1.addTiming("6:00 AM - 10:00 PM");
+        phase2.addTiming("6:00 AM - 10:00 PM");
+        phase3.addTiming("6:00 AM - 10:00 PM");
+        moulsariavenue.addTiming("6:00 AM - 10:00 PM");
+        belvederetowers.addTiming("6:00 AM - 10:00 PM");
+        sec4243.addTiming("6:00 AM - 10:00 PM");
+        cybercity.addTiming("6:00 AM - 10:00 PM");
+        sec5354.addTiming("6:00 AM - 10:00 PM");
+        sec5556.addTiming("6:00 AM - 10:00 PM");
+        dwarka.addTiming("6:00 AM - 10:00 PM");
+        dwarkasec21.addTiming("6:00 AM - 10:00 PM");
+        dwarkasec8.addTiming("6:00 AM - 10:00 PM");
+        dwarkasec9.addTiming("6:00 AM - 10:00 PM");
+        dwarkasec10.addTiming("6:00 AM - 10:00 PM");
+        dwarkasec11.addTiming("6:00 AM - 10:00 PM");
+        dwarkasec12.addTiming("6:00 AM - 10:00 PM");
+        dwarkasec13.addTiming("6:00 AM - 10:00 PM");
+        dwarkasec14.addTiming("6:00 AM - 10:00 PM");
+        dwarkamor.addTiming("6:00 AM - 10:00 PM");
+        nawada.addTiming("6:00 AM - 10:00 PM");
+        uttamnagarwest.addTiming("6:00 AM - 10:00 PM");
+        janakpuriwest.addTiming("6:00 AM - 10:00 PM");
+        janakpurieast.addTiming("6:00 AM - 10:00 PM");
+        tilaknagar.addTiming("6:00 AM - 10:00 PM");
+        subhashnagar.addTiming("6:00 AM - 10:00 PM");
+        tagoregarden.addTiming("6:00 AM - 10:00 PM");
+        rajourigarden.addTiming("6:00 AM - 10:00 PM");
+        rameshnagar.addTiming("6:00 AM - 10:00 PM");
+        motinagar.addTiming("6:00 AM - 10:00 PM");
+        kirtinagar.addTiming("6:00 AM - 10:00 PM");
+        shadipur.addTiming("6:00 AM - 10:00 PM");
+        patelnagar.addTiming("6:00 AM - 10:00 PM");
+        rajendrapalace.addTiming("6:00 AM - 10:00 PM");
+        karolbagh.addTiming("6:00 AM - 10:00 PM");
+        jhandewalan.addTiming("6:00 AM - 10:00 PM");
+        ramarg.addTiming("6:00 AM - 10:00 PM");
+        barakhambaroad.addTiming("6:00 AM - 10:00 PM");
+        mandihouse.addTiming("6:00 AM - 10:00 PM");
+        supremecourt.addTiming("6:00 AM - 10:00 PM");
+        yamunabank.addTiming("6:00 AM - 10:00 PM");
+        laxminagar.addTiming("6:00 AM - 10:00 PM");
+        nirmanvihar.addTiming("6:00 AM - 10:00 PM");
+        preetvihar.addTiming("6:00 AM - 10:00 PM");
+        karkarduma.addTiming("6:00 AM - 10:00 PM");
+        anandvihar.addTiming("6:00 AM - 10:00 PM");
+        kaushambi.addTiming("6:00 AM - 10:00 PM");
+        vaishali.addTiming("6:00 AM - 10:00 PM");
+        dashrathpuri.addTiming("6:00 AM - 10:00 PM");
+        palam.addTiming("6:00 AM - 10:00 PM");
+        sadarbazar.addTiming("6:00 AM - 10:00 PM");
+        vasantvihar.addTiming("6:00 AM - 10:00 PM");
+        munirka.addTiming("6:00 AM - 10:00 PM");
+        chiragdelhi.addTiming("6:00 AM - 10:00 PM");
+        nehruenclave.addTiming("6:00 AM - 10:00 PM");
+        okhla.addTiming("6:00 AM - 10:00 PM");
+        sukhdevvihar.addTiming("6:00 AM - 10:00 PM");
+        jamiamiliaislamia.addTiming("6:00 AM - 10:00 PM");
+        okhlavihar.addTiming("6:00 AM - 10:00 PM");
+        jasolavihar.addTiming("6:00 AM - 10:00 PM");
+        kalindikunj.addTiming("6:00 AM - 10:00 PM");
+        okhlabirdsanctuary.addTiming("6:15 AM - 10:30 PM");
+        botanicalgarden.addTiming("8:00 AM - 10:00 PM");
+
+
+        millenniumcitycentre.addNeighbor(iffcochowk, 2);
+        iffcochowk.addNeighbor(mgroad, 2);
+        mgroad.addNeighbor(sikanderpur, 2);
+        sikanderpur.addNeighbor(gurudronacharya, 3);
+        gurudronacharya.addNeighbor(arjangarh, 5);
+        arjangarh.addNeighbor(ghitorni, 5);
+        ghitorni.addNeighbor(sultanpur, 2);
+        sultanpur.addNeighbor(chattarpur, 3);
+		chattarpur.addNeighbor(qutabminar, 4);
+        qutabminar.addNeighbor(saket, 4);
+        saket.addNeighbor(malviyanagar, 2);
+        malviyanagar.addNeighbor(hauzkhas, 4);
+        hauzkhas.addNeighbor(greenpark, 5);
+        greenpark.addNeighbor(aiims, 5);
+        aiims.addNeighbor(ina, 2);
+        ina.addNeighbor(jorbagh, 3);
+		jorbagh.addNeighbor(lokkalyanmarg, 2);
+        lokkalyanmarg.addNeighbor(udyogbhawan, 2);
+        udyogbhawan.addNeighbor(centralsecretariat, 2);
+        centralsecretariat.addNeighbor(patelchowk, 3);
+        patelchowk.addNeighbor(rajivchowk, 5);
+        rajivchowk.addNeighbor(newdelhi, 5);
+        newdelhi.addNeighbor(chawribazar, 2);
+        chawribazar.addNeighbor(chandnichowk, 3);
+		chandnichowk.addNeighbor(kashmeregate, 2);
+        kashmeregate.addNeighbor(civillines, 2);
+        civillines.addNeighbor(vidhansabha, 2);
+        vidhansabha.addNeighbor(vishwavidyalaya, 3);
+        vishwavidyalaya.addNeighbor(gtbnagar, 5);
+        gtbnagar.addNeighbor(modeltown, 5);
+        modeltown.addNeighbor(adarshnagar, 2);
+        adarshnagar.addNeighbor(jahangiripuri, 3);
+		rajivchowk.addNeighbor(barakhambaroad, 5);
+        barakhambaroad.addNeighbor(mandihouse, 2);
+        mandihouse.addNeighbor(supremecourt, 3);
+		supremecourt.addNeighbor(yamunabank, 2);
+        yamunabank.addNeighbor(laxminagar, 2);
+        laxminagar.addNeighbor(nirmanvihar, 2);
+        nirmanvihar.addNeighbor(preetvihar, 3);
+        preetvihar.addNeighbor(karkarduma, 5);
+        karkarduma.addNeighbor(anandvihar, 5);
+        anandvihar.addNeighbor(kaushambi, 2);
+        kaushambi.addNeighbor(vaishali, 3);
+		vaishali.addNeighbor(kaushambi, 5);
+        kaushambi.addNeighbor(anandvihar, 2);
+        anandvihar.addNeighbor(karkarduma, 3);
+		karkarduma.addNeighbor(preetvihar, 2);
+        preetvihar.addNeighbor(nirmanvihar, 2);
+        nirmanvihar.addNeighbor(laxminagar, 2);
+        laxminagar.addNeighbor(yamunabank, 3);
+        yamunabank.addNeighbor(supremecourt, 5);
+        supremecourt.addNeighbor(mandihouse, 5);
+        mandihouse.addNeighbor(barakhambaroad, 2);
+        barakhambaroad.addNeighbor(rajivchowk, 3);
+		rajivchowk.addNeighbor(ramarg, 5);
+        ramarg.addNeighbor(jhandewalan, 2);
+        jhandewalan.addNeighbor(karolbagh, 3);
+		karolbagh.addNeighbor(rajendrapalace, 2);
+        rajendrapalace.addNeighbor(patelnagar, 2);
+        patelnagar.addNeighbor(shadipur, 2);
+        shadipur.addNeighbor(kirtinagar, 3);
+        kirtinagar.addNeighbor(motinagar, 5);
+        motinagar.addNeighbor(rameshnagar, 5);
+        rameshnagar.addNeighbor(rajourigarden, 2);
+        rajourigarden.addNeighbor(tagoregarden, 3);
+		tagoregarden.addNeighbor(subhashnagar, 3);
+		subhashnagar.addNeighbor(tilaknagar, 5);
+        tilaknagar.addNeighbor(janakpurieast, 2);
+        janakpurieast.addNeighbor(janakpuriwest, 3);
+		janakpuriwest.addNeighbor(uttamnagareast, 2);
+        uttamnagareast.addNeighbor(uttamnagarwest, 2);
+        uttamnagarwest.addNeighbor(nawada, 2);
+        nawada.addNeighbor(dwarkamor, 3);
+        dwarkamor.addNeighbor(dwarka, 5);
+        dwarka.addNeighbor(dwarkasec14, 5);
+        dwarkasec14.addNeighbor(dwarkasec13, 2);
+        dwarkasec13.addNeighbor(dwarkasec12, 3);
+		dwarkasec12.addNeighbor(dwarkasec10, 5);
+        dwarkasec10.addNeighbor(dwarkasec9, 2);
+        dwarkasec9.addNeighbor(dwarkasec8, 3);
+		dwarkasec8.addNeighbor(dwarkasec21, 2);
+        dwarkasec21.addNeighbor(dwarkasec8, 2);
+        dwarkasec8.addNeighbor(dwarkasec9, 2);
+        dwarkasec9.addNeighbor(dwarkasec10, 3);
+        dwarkasec10.addNeighbor(dwarkasec11, 5);
+        dwarkasec11.addNeighbor(dwarkasec12, 5);
+        dwarkasec12.addNeighbor(dwarkasec13, 2);
+        dwarkasec13.addNeighbor(dwarkasec14, 3);
+		dwarkasec14.addNeighbor(dwarka, 5);
+        dwarka.addNeighbor(dwarkamor, 2);
+        dwarkamor.addNeighbor(nawada, 3);
+		nawada.addNeighbor(uttamnagarwest, 2);
+        uttamnagarwest.addNeighbor(uttamnagareast, 2);
+        uttamnagareast.addNeighbor(janakpuriwest, 2);
+        janakpuriwest.addNeighbor(janakpurieast, 3);
+        janakpurieast.addNeighbor(tilaknagar, 5);
+        tilaknagar.addNeighbor(subhashnagar, 5);
+        subhashnagar.addNeighbor(tagoregarden, 2);
+        tagoregarden.addNeighbor(rajourigarden, 3);
+		rajourigarden.addNeighbor(rameshnagar, 5);
+        rameshnagar.addNeighbor(motinagar, 2);
+        motinagar.addNeighbor(kirtinagar, 3);
+		kirtinagar.addNeighbor(shadipur, 2);
+        shadipur.addNeighbor(patelnagar, 2);
+        patelnagar.addNeighbor(rajendrapalace, 2);
+        rajendrapalace.addNeighbor(karolbagh, 3);
+        karolbagh.addNeighbor(jhandewalan, 5);
+        jhandewalan.addNeighbor(ramarg, 5);
+        ramarg.addNeighbor(rajivchowk, 2);
+        jahangiripuri.addNeighbor(adarshnagar, 3);
+		adarshnagar.addNeighbor(modeltown, 5);
+        modeltown.addNeighbor(gtbnagar, 2);
+        gtbnagar.addNeighbor(vishwavidyalaya, 3);
+		vishwavidyalaya.addNeighbor(vidhansabha, 2);
+        vidhansabha.addNeighbor(civillines, 2);
+        civillines.addNeighbor(kashmeregate, 2);
+        kashmeregate.addNeighbor(chandnichowk, 3);
+        chandnichowk.addNeighbor(chawribazar, 5);
+        chawribazar.addNeighbor(newdelhi, 5);
+        newdelhi.addNeighbor(rajivchowk, 2);
+        rajivchowk.addNeighbor(patelchowk, 3);
+		patelchowk.addNeighbor(centralsecretariat, 3);
+		centralsecretariat.addNeighbor(udyogbhawan, 5);
+        udyogbhawan.addNeighbor(lokkalyanmarg, 2);
+        lokkalyanmarg.addNeighbor(jorbagh, 3);
+		jorbagh.addNeighbor(ina, 2);
+        ina.addNeighbor(aiims, 2);
+        aiims.addNeighbor(greenpark, 2);
+        greenpark.addNeighbor(hauzkhas, 3);
+        hauzkhas.addNeighbor(malviyanagar, 5);
+        malviyanagar.addNeighbor(saket, 5);
+        saket.addNeighbor(qutabminar, 2);
+        qutabminar.addNeighbor(chattarpur, 3);
+		chattarpur.addNeighbor(sultanpur, 5);
+        sultanpur.addNeighbor(ghitorni, 2);
+        ghitorni.addNeighbor(arjangarh, 3);
+		arjangarh.addNeighbor(gurudronacharya, 2);
+        gurudronacharya.addNeighbor(sikanderpur, 2);
+        sikanderpur.addNeighbor(mgroad, 2);
+        mgroad.addNeighbor(iffcochowk, 3);
+        iffcochowk.addNeighbor(millenniumcitycentre, 5);
+        sikanderpur.addNeighbor(phase1, 5);
+        phase1.addNeighbor(sec4243, 2);
+        sec4243.addNeighbor(sec5354, 3);
+		sec5354.addNeighbor(sec5556, 2);
+        sec5556.addNeighbor(sec5354, 2);
+        sec5354.addNeighbor(sec4243, 2);
+        sec4243.addNeighbor(phase1, 3);
+        phase1.addNeighbor(sikanderpur, 5);
+        sikanderpur.addNeighbor(phase2, 5);
+        phase2.addNeighbor(phase3, 2);
+        phase3.addNeighbor(moulsariavenue, 3);
+		moulsariavenue.addNeighbor(cybercity, 3);
+		cybercity.addNeighbor(belvederetowers, 2);
+        belvederetowers.addNeighbor(phase2, 2);
+        phase2.addNeighbor(belvederetowers, 2);
+        belvederetowers.addNeighbor(cybercity, 3);
+        cybercity.addNeighbor(moulsariavenue, 5);
+        moulsariavenue.addNeighbor(phase3, 5);
+        phase3.addNeighbor(phase2, 2);
+		phase2.addNeighbor(sikanderpur,3);
+        botanicalgarden.addNeighbor(okhlabirdsanctuary, 5);
+        okhlabirdsanctuary.addNeighbor(kalindikunj, 2);
+        kalindikunj.addNeighbor(jasolavihar, 3);
+		jasolavihar.addNeighbor(okhlavihar, 2);
+        okhlavihar.addNeighbor(jamiamiliaislamia, 2);
+        jamiamiliaislamia.addNeighbor(sukhdevvihar, 2);
+        sukhdevvihar.addNeighbor(okhla, 3);
+        okhla.addNeighbor(kalkaji, 5);
+        kalkaji.addNeighbor(nehruenclave, 5);
+        nehruenclave.addNeighbor(graterkailash, 2);
+        graterkailash.addNeighbor(chiragdelhi, 3);
+		chiragdelhi.addNeighbor(panchsheel, 3);
+		panchsheel.addNeighbor(hauzkhas, 5);
+        hauzkhas.addNeighbor(iit, 2);
+        iit.addNeighbor(rkpuram, 3);
+	    rkpuram.addNeighbor(munirka, 2);
+        munirka.addNeighbor(vasantvihar, 2);
+        vasantvihar.addNeighbor(shankarvihar, 2);
+        shankarvihar.addNeighbor(igit1, 3);
+        igit1.addNeighbor(sadarbazar, 5);
+        sadarbazar.addNeighbor(palam, 5);
+        palam.addNeighbor(dashrathpuri, 2);
+        dashrathpuri.addNeighbor(dabrimor, 3);
+		dabrimor.addNeighbor(janakpuriwest, 5);
+        janakpuriwest.addNeighbor(dabrimor, 2);
+        dabrimor.addNeighbor(dashrathpuri, 3);
+		dashrathpuri.addNeighbor(palam, 2);
+        palam.addNeighbor(sadarbazar, 2);
+        sadarbazar.addNeighbor(igit1, 2);
+        igit1.addNeighbor(shankarvihar, 3);
+        shankarvihar.addNeighbor(vasantvihar, 5);
+        vasantvihar.addNeighbor(munirka, 5);
+        munirka.addNeighbor(rkpuram, 2);
+        rkpuram.addNeighbor(iit, 3);
+		iit.addNeighbor(hauzkhas, 2);
+        hauzkhas.addNeighbor(panchsheel, 2);
+        panchsheel.addNeighbor(chiragdelhi, 2);
+        chiragdelhi.addNeighbor(graterkailash, 3);
+        graterkailash.addNeighbor(nehruenclave, 5);
+        nehruenclave.addNeighbor(kalkaji, 5);
+        kalkaji.addNeighbor(okhla, 2);
+        okhla.addNeighbor(sukhdevvihar, 3);
+		sukhdevvihar.addNeighbor(jamiamiliaislamia, 3);
+		jamiamiliaislamia.addNeighbor(okhlavihar, 2);
+        okhlavihar.addNeighbor(jasolavihar, 2);
+        jasolavihar.addNeighbor(kalindikunj, 2);
+        kalindikunj.addNeighbor(okhlabirdsanctuary, 3);
+        okhlabirdsanctuary.addNeighbor(botanicalgarden, 5);
+
+
+        System.out.println("\t\t\t\t\t\t***WELCOME TO THE METRO APP*** ");
+        System.out.println("\t\t\t\t\t\t~~List of All Actions~~ \n");
+
+        while (true) {
+            System.out.println();
+            System.out.println("Choose your option - ");
+            System.out.println("1. List of all Stations");
+            System.out.println("2. Display Metro time");
+            System.out.println("3. Find Shortest Route");
+            System.out.println("4. Exit");
+
+            System.out.print("Enter your choice: ");
+            int choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    System.out.println();
+                    System.out.println("\nList of all Stations:\n");
+                    for (Station station : allStations) {
+                        System.out.println(station);
+                    }
+                        System.out.println();
+                    break;
+                    
+                case 2:
+                     System.out.println();
+                     System.out.print("Enter the station: ");
+                    String name = sc.next();
+    
+                    Station station = findStationByName(name, allStations);
+    
+                    if (station == null) {
+                       System.out.println("Invalid station name. Please check the station name and try again.");
+                     break;
+                     }
+    
+                     System.out.println("Timings for " + station + ":");
+    
+                    for (String timing : station.timings) {
+                            System.out.println(timing);
+                    }
+    
+                         System.out.println();
+                        break;
+                    
+                case 3:
+                        System.out.println();
+                    System.out.print("Enter the start station: ");
+                    String startStationName = sc.next();
+                    System.out.print("Enter the end station: ");
+                    String endStationName = sc.next();
+                    
+
+                    startStation = findStationByName(startStationName, allStations);
+                    endStation = findStationByName(endStationName, allStations);
+                    
+                    if (startStation == null || endStation == null) {
+                        System.out.println("Invalid station names. Please check the station names and try again.");
+                        break;
+                    }
+                    
+                    List<Station> shortestPath = dijkstra(startStation, endStation);
+
+                    if (shortestPath == null) {
+                        System.out.println("No path found between " + startStation + " and " + endStation);
+                        break;
+                    }
+
+                    System.out.println("Shortest path from " + startStation + " to " + endStation + ":");
+                    
+                    for (int i = 0; i < shortestPath.size(); i++) {
+                         station = shortestPath.get(i);
+                        System.out.print(station);
+                        
+                        if (i != shortestPath.size() - 1) {
+                            System.out.print(" -> ");
+                        }
+                    }
+                        System.out.println();
+                    
+                   break;
+                   
+                case 4:
+                        System.out.println();
+                   System.out.println("---------------------Exiting Metro App.--------------------");
+                   System.exit(0);
+                       System.out.println();
+                   break;
+                   
+                default:
+                    System.out.println();
+                   System.out.println("Invalid choice. Please enter a valid choice.");
+                   
+            }
+        }
+    }
+}
